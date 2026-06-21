@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>반영구화장·문신 법령 모니터링</title>
+<meta name="description" content="반영구화장·문신(타투) 법령 동향 매일 자동 모니터링 — 문신사법 하위법령·판례·위생기준·사업자 영향">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚖️</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<style>
+  :root{
+    --bg:#0f1115; --panel:#171a21; --panel2:#1d212b; --line:#2a2f3a;
+    --txt:#e6e8ee; --muted:#9aa3b2; --accent:#5b9dff; --accent2:#7c5cff;
+    --good:#3ecf8e; --warn:#ffb454; --bad:#ff6b6b;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0; background:var(--bg); color:var(--txt);
+    font-family:'Noto Sans KR',-apple-system,BlinkMacSystemFont,sans-serif;
+    line-height:1.7; -webkit-font-smoothing:antialiased;
+  }
+  header.hero{
+    background:radial-gradient(1200px 400px at 20% -10%,rgba(124,92,255,.25),transparent),
+               radial-gradient(900px 400px at 90% 0%,rgba(91,157,255,.20),transparent),
+               var(--panel);
+    border-bottom:1px solid var(--line); padding:34px 20px 26px;
+  }
+  .wrap{max-width:960px; margin:0 auto; padding:0 18px}
+  .eyebrow{color:var(--accent); font-weight:700; letter-spacing:.12em; font-size:12px; text-transform:uppercase}
+  h1.title{font-size:clamp(24px,4.5vw,38px); font-weight:900; margin:6px 0 10px; letter-spacing:-.02em}
+  .sub{color:var(--muted); font-size:15px; max-width:680px}
+  .badges{display:flex; flex-wrap:wrap; gap:8px; margin-top:16px}
+  .badge{display:inline-flex; align-items:center; gap:6px; background:var(--panel2); border:1px solid var(--line);
+         padding:6px 12px; border-radius:999px; font-size:13px; font-weight:500}
+  .badge b{font-weight:700}
+  .dot{width:8px;height:8px;border-radius:50%}
+  .dot.g{background:var(--good)} .dot.y{background:var(--warn)} .dot.b{background:var(--accent)}
+  nav.tabs{position:sticky; top:0; z-index:10; background:rgba(15,17,21,.86); backdrop-filter:blur(10px);
+           border-bottom:1px solid var(--line)}
+  .tabsInner{max-width:960px; margin:0 auto; display:flex; gap:4px; padding:8px 18px; overflow-x:auto}
+  .tab{appearance:none; border:0; background:transparent; color:var(--muted); font-family:inherit;
+       font-size:14px; font-weight:700; padding:10px 14px; border-radius:10px; cursor:pointer; white-space:nowrap}
+  .tab:hover{color:var(--txt); background:var(--panel)}
+  .tab.active{color:var(--txt); background:var(--panel2); box-shadow:inset 0 -2px 0 var(--accent)}
+  main{max-width:960px; margin:0 auto; padding:26px 18px 80px}
+  .card{background:var(--panel); border:1px solid var(--line); border-radius:16px; padding:8px 26px 26px; margin-bottom:18px}
+  .reportList{display:grid; gap:10px}
+  .reportItem{display:flex; justify-content:space-between; align-items:center; gap:12px;
+    background:var(--panel2); border:1px solid var(--line); border-radius:12px; padding:14px 16px;
+    cursor:pointer; transition:.15s; text-decoration:none; color:inherit}
+  .reportItem:hover{border-color:var(--accent); transform:translateY(-1px)}
+  .reportItem .d{font-weight:700}
+  .reportItem .arr{color:var(--muted)}
+  .loading{color:var(--muted); padding:40px 0; text-align:center}
+  .updnote{color:var(--muted); font-size:13px; margin:0 0 14px}
+  footer{border-top:1px solid var(--line); color:var(--muted); font-size:13px; text-align:center; padding:24px 18px 50px}
+  footer a{color:var(--accent)}
+
+  /* markdown styles */
+  .md h1{font-size:26px; font-weight:900; margin:28px 0 12px; letter-spacing:-.02em}
+  .md h2{font-size:21px; font-weight:800; margin:30px 0 12px; padding-top:14px; border-top:1px solid var(--line)}
+  .md h3{font-size:17px; font-weight:700; margin:22px 0 8px; color:#cfd6e4}
+  .md h1:first-child{margin-top:14px}
+  .md p{margin:10px 0}
+  .md ul{padding-left:20px; margin:10px 0}
+  .md li{margin:5px 0}
+  .md strong{color:#fff; font-weight:700}
+  .md a{color:var(--accent); text-decoration:none}
+  .md a:hover{text-decoration:underline}
+  .md hr{border:0; border-top:1px solid var(--line); margin:22px 0}
+  .md blockquote{border-left:3px solid var(--accent); margin:14px 0; padding:6px 16px;
+    background:var(--panel2); border-radius:0 10px 10px 0; color:var(--muted)}
+  .md code{background:var(--panel2); border:1px solid var(--line); padding:2px 6px; border-radius:6px; font-size:.9em}
+  .md pre{background:#0b0d12; border:1px solid var(--line); padding:14px; border-radius:12px; overflow:auto}
+  .md pre code{background:0; border:0; padding:0}
+  .md table{border-collapse:collapse; width:100%; margin:16px 0; font-size:14px; display:block; overflow-x:auto}
+  .md th,.md td{border:1px solid var(--line); padding:9px 12px; text-align:left; vertical-align:top}
+  .md th{background:var(--panel2); font-weight:700; white-space:nowrap}
+  .md tr:nth-child(even) td{background:rgba(255,255,255,.015)}
+  .err{color:var(--bad); padding:30px 0}
+  .backBtn{appearance:none;border:1px solid var(--line);background:var(--panel2);color:var(--txt);
+    font-family:inherit;font-weight:700;font-size:13px;padding:8px 14px;border-radius:10px;cursor:pointer;margin:6px 0 4px}
+  .backBtn:hover{border-color:var(--accent)}
+</style>
+</head>
+<body>
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow">⚖️ LEGAL MONITORING · 매일 자동 갱신</div>
+    <h1 class="title">반영구화장·문신 법령 모니터링</h1>
+    <p class="sub">문신사법 하위법령·대법원 판례·멸균/위생 기준·사업자(SMP·반영구) 영향을 매일 오전 10시 자동으로 점검합니다.</p>
+    <div class="badges">
+      <span class="badge"><span class="dot g"></span> 문신사법 <b>통과</b> · 시행 2027-10-29</span>
+      <span class="badge"><span class="dot g"></span> 대법 판례 <b>변경 확정</b> (2026-05)</span>
+      <span class="badge"><span class="dot y"></span> 하위법령 <b>제정 추진중</b></span>
+      <span class="badge"><span class="dot b"></span> 갱신 <b id="updated">—</b></span>
+    </div>
+  </div>
+</header>
+
+<nav class="tabs">
+  <div class="tabsInner">
+    <button class="tab active" data-view="master">📋 마스터 문서</button>
+    <button class="tab" data-view="reports">🗂️ 변경 리포트</button>
+    <button class="tab" data-view="about">ℹ️ 시스템 정보</button>
+  </div>
+</nav>
+
+<main>
+  <div id="content" class="card"><div class="loading">불러오는 중…</div></div>
+</main>
+
+<footer>
+  자동 모니터링 시스템 · 데이터 출처:
+  <a href="https://github.com/shinheegon/law-tattoo-monitor" target="_blank">GitHub 레포</a> ·
+  매일 10:04(KST) 클라우드 자동 점검<br>
+  ⚠️ 본 사이트는 정보 제공용이며 법률 자문이 아닙니다. 중요한 결정은 전문가와 상담하세요.
+</footer>
+
+<script>
+const REPO = "shinheegon/law-tattoo-monitor";
+const MASTER = "반영구_문신_법령_모니터링_마스터.md";
+const REPORT_DIR = "변경리포트";
+const content = document.getElementById("content");
+marked.setOptions({gfm:true, breaks:false});
+
+function rewriteRelLinks(html){
+  // 변경리포트 내부 상대링크를 앱 내부 라우팅으로 바꿈
+  return html.replace(/href="변경리포트\/([^"]+\.md)"/g,
+    (m,f)=>`href="#report/${encodeURIComponent(f)}" onclick="openReport('${f}');return false;"`);
+}
+
+async function fetchText(path){
+  const r = await fetch("./"+encodeURI(path)+"?t="+Date.now());
+  if(!r.ok) throw new Error(path+" 로드 실패 ("+r.status+")");
+  return r.text();
+}
+
+async function loadMaster(){
+  content.innerHTML = '<div class="loading">마스터 문서 불러오는 중…</div>';
+  try{
+    const md = await fetchText(MASTER);
+    // '최종 갱신' 추출
+    const m = md.match(/최종 갱신:\*\*\s*([0-9-]+)/) || md.match(/기준일:\*\*\s*([0-9-]+)/);
+    if(m) document.getElementById("updated").textContent = m[1];
+    content.innerHTML = '<div class="md">'+rewriteRelLinks(marked.parse(md))+'</div>';
+  }catch(e){ content.innerHTML = '<div class="err">⚠️ '+e.message+'</div>'; }
+}
+
+async function loadReports(){
+  content.innerHTML = '<div class="loading">변경 리포트 목록 불러오는 중…</div>';
+  try{
+    const r = await fetch(`https://api.github.com/repos/${REPO}/contents/${encodeURIComponent(REPORT_DIR)}?t=`+Date.now());
+    if(!r.ok) throw new Error("목록 로드 실패 ("+r.status+")");
+    let files = await r.json();
+    files = files.filter(f=>f.name.endsWith(".md")).sort((a,b)=>b.name.localeCompare(a.name));
+    if(!files.length){ content.innerHTML='<p class="updnote">아직 등록된 변경 리포트가 없습니다.</p>'; return; }
+    let html = '<p class="updnote">변동이 확인된 날만 리포트가 생성됩니다. 최신순.</p><div class="reportList">';
+    for(const f of files){
+      const date = f.name.replace("_변경리포트.md","").replace(".md","");
+      html += `<a class="reportItem" href="#report/${encodeURIComponent(f.name)}" onclick="openReport('${f.name}');return false;">
+        <span class="d">📄 ${date}</span><span class="arr">자세히 →</span></a>`;
+    }
+    content.innerHTML = html+'</div>';
+  }catch(e){ content.innerHTML='<div class="err">⚠️ '+e.message+'</div>'; }
+}
+
+async function openReport(name){
+  setActive("reports");
+  content.innerHTML = '<div class="loading">리포트 불러오는 중…</div>';
+  try{
+    const md = await fetchText(REPORT_DIR+"/"+name);
+    content.innerHTML = '<button class="backBtn" onclick="loadReports()">← 목록으로</button>'+
+                        '<div class="md">'+marked.parse(md)+'</div>';
+    window.scrollTo({top:0,behavior:'smooth'});
+  }catch(e){ content.innerHTML='<div class="err">⚠️ '+e.message+'</div>'; }
+}
+
+function loadAbout(){
+  content.innerHTML = `<div class="md">
+    <h1>ℹ️ 이 시스템은 어떻게 동작하나요</h1>
+    <p>매일 <strong>오전 10시 4분(KST)</strong> 클라우드 에이전트가 자동으로 다음을 수행합니다.</p>
+    <ul>
+      <li>문신사법 시행령·시행규칙(하위법령), 멸균·위생·염료·마취제 기준, 국가시험·면허·임시등록, 신규 판례/단속, 복지부·식약처 보도자료를 웹 검색</li>
+      <li>기존 문서와 대조해 <strong>새로 바뀐 내용만</strong> 추출</li>
+      <li>변동이 있으면 → 마스터 문서 갱신 + 그날짜 변경 리포트 생성 + GitHub 자동 커밋</li>
+      <li>변동이 없으면 → "변경된 내용 없음" 한 줄만 기록</li>
+    </ul>
+    <p>이 사이트는 GitHub 레포의 문서를 실시간으로 읽어 보여주므로, 자동 점검이 갱신될 때마다 <strong>새로고침만 하면 최신 내용</strong>이 반영됩니다.</p>
+    <h2>구성</h2>
+    <ul>
+      <li><strong>데이터:</strong> <a href="https://github.com/${REPO}" target="_blank">github.com/${REPO}</a></li>
+      <li><strong>점검 주기:</strong> 매일 10:04 KST (클라우드 루틴)</li>
+      <li><strong>사업 맥락:</strong> SMP(두피문신)·반영구화장 시술 운영 관점의 영향·예방책 중심</li>
+    </ul>
+    <blockquote>⚠️ 정보 제공용입니다. 법률 자문이 아니며, 중요한 의사결정은 반드시 전문가 상담을 거치세요.</blockquote>
+  </div>`;
+}
+
+function setActive(view){
+  document.querySelectorAll(".tab").forEach(t=>t.classList.toggle("active",t.dataset.view===view));
+}
+function route(view){
+  setActive(view);
+  if(view==="master") loadMaster();
+  else if(view==="reports") loadReports();
+  else loadAbout();
+}
+document.querySelectorAll(".tab").forEach(t=>t.addEventListener("click",()=>{
+  location.hash = t.dataset.view; route(t.dataset.view);
+}));
+
+// 초기 라우팅 (해시 지원)
+const h = location.hash.replace("#","");
+if(h.startsWith("report/")){ loadMaster(); openReport(decodeURIComponent(h.split("/")[1])); }
+else route(["master","reports","about"].includes(h)?h:"master");
+</script>
+</body>
+</html>
