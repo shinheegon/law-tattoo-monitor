@@ -16,6 +16,9 @@
     --good:#3ecf8e; --warn:#ffb454; --bad:#ff6b6b;
   }
   *{box-sizing:border-box}
+  /* 복사 방지: 선택 비활성(링크/버튼은 클릭 가능) */
+  body{-webkit-user-select:none; -moz-user-select:none; -ms-user-select:none; user-select:none; -webkit-touch-callout:none}
+  a,button{-webkit-user-select:none; user-select:none}
   html{scroll-behavior:smooth}
   body{
     margin:0; background:var(--bg); color:var(--txt);
@@ -89,6 +92,22 @@
   .md th,.md td{border:1px solid var(--line); padding:9px 12px; text-align:left; vertical-align:top}
   .md th{background:var(--panel2); font-weight:700; white-space:nowrap}
   .md tr:nth-child(even) td{background:rgba(255,255,255,.015)}
+  /* HOW 워터마크 — 화면 전체 대각선 반복 (캡처 시에도 브랜드 노출, 클릭 통과) */
+  .watermark{
+    position:fixed; inset:0; z-index:5; pointer-events:none;
+    background-image:repeating-linear-gradient(-30deg,
+      transparent 0, transparent 120px,
+      rgba(255,255,255,.04) 120px, rgba(255,255,255,.04) 121px);
+  }
+  .watermark::before{
+    content:"HOW · HOW · HOW · HOW · HOW · HOW · HOW · HOW · HOW · HOW · HOW · HOW · HOW · HOW · HOW · HOW · HOW · HOW · HOW · HOW · HOW · HOW · HOW · HOW · HOW · HOW · HOW · HOW · HOW · HOW · HOW · HOW · HOW · HOW · HOW · HOW · HOW · HOW · HOW · HOW · HOW · HOW · HOW · HOW · HOW · HOW · HOW · HOW · HOW · HOW · HOW · HOW · HOW · HOW · HOW · HOW · HOW · HOW · HOW · HOW · HOW · HOW · HOW · HOW · HOW · HOW · HOW · HOW · HOW · HOW · HOW · HOW · HOW · HOW · HOW · HOW · HOW · HOW · HOW · HOW";
+    position:absolute; top:-20%; left:-20%; width:140%; height:140%;
+    transform:rotate(-30deg); transform-origin:center;
+    font-size:26px; font-weight:900; letter-spacing:.18em; line-height:3.4;
+    color:rgba(123,160,255,.07); white-space:normal; word-spacing:18px; overflow:hidden;
+    user-select:none;
+  }
+  @media(max-width:520px){ .watermark::before{font-size:18px; line-height:3} }
   .err{color:var(--bad); padding:30px 0}
   .backBtn{appearance:none;border:1px solid var(--line);background:var(--panel2);color:var(--txt);
     font-family:inherit;font-weight:700;font-size:13px;padding:8px 14px;border-radius:10px;cursor:pointer;margin:6px 0 4px}
@@ -96,6 +115,7 @@
 </style>
 </head>
 <body>
+<div class="watermark"></div>
 <header class="hero">
   <div class="wrap">
     <div class="brandrow">
@@ -234,6 +254,24 @@ document.querySelectorAll(".tab").forEach(t=>t.addEventListener("click",()=>{
 const h = location.hash.replace("#","");
 if(h.startsWith("report/")){ loadMaster(); openReport(decodeURIComponent(h.split("/")[1])); }
 else route(["master","reports","about"].includes(h)?h:"master");
+</script>
+
+<!-- 약한 복사 방지(우회 가능) : 우클릭·복사·저장/인쇄/소스 단축키 차단 -->
+<script>
+(function(){
+  var stop=function(e){e.preventDefault();return false;};
+  document.addEventListener('contextmenu',stop);           // 우클릭 메뉴
+  document.addEventListener('copy',stop);                   // 복사
+  document.addEventListener('cut',stop);
+  document.addEventListener('dragstart',stop);              // 드래그
+  document.addEventListener('keydown',function(e){
+    var k=(e.key||'').toLowerCase();
+    // Ctrl/⌘ + S(저장)·P(인쇄)·U(소스)·C(복사)·A(전체선택), F12, PrintScreen
+    if((e.ctrlKey||e.metaKey) && ['s','p','u','c','a'].indexOf(k)>-1){ stop(e); }
+    if(k==='f12'){ stop(e); }
+    if(k==='printscreen'){ try{navigator.clipboard.writeText('© HOW 법령 모니터링');}catch(x){} }
+  });
+})();
 </script>
 
 <!-- 방문 집계 (화면에 표시되지 않음). 통계는 stats.html 에서만 확인 -->
