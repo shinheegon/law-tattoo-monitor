@@ -16,9 +16,12 @@
     --good:#3ecf8e; --warn:#ffb454; --bad:#ff6b6b;
   }
   *{box-sizing:border-box}
-  /* 복사 방지: 선택 비활성(링크/버튼은 클릭 가능) */
-  body{-webkit-user-select:none; -moz-user-select:none; -ms-user-select:none; user-select:none; -webkit-touch-callout:none}
-  a,button{-webkit-user-select:none; user-select:none}
+  /* 복사 방지: 모든 요소 선택(드래그) 비활성 — 링크/버튼 클릭은 유지 */
+  *,*::before,*::after{
+    -webkit-user-select:none !important; -moz-user-select:none !important;
+    -ms-user-select:none !important; user-select:none !important;
+    -webkit-touch-callout:none !important;
+  }
   html{scroll-behavior:smooth}
   body{
     margin:0; background:var(--bg); color:var(--txt);
@@ -261,8 +264,10 @@ else route(["master","reports","about"].includes(h)?h:"master");
 (function(){
   var stop=function(e){e.preventDefault();return false;};
   document.addEventListener('contextmenu',stop);           // 우클릭 메뉴
+  document.addEventListener('selectstart',stop);           // 드래그 선택 시작 차단
   document.addEventListener('copy',stop);                   // 복사
   document.addEventListener('cut',stop);
+  document.addEventListener('paste',stop);                  // 붙여넣기
   document.addEventListener('dragstart',stop);              // 드래그
   document.addEventListener('keydown',function(e){
     var k=(e.key||'').toLowerCase();
