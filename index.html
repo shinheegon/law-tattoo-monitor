@@ -218,5 +218,25 @@ const h = location.hash.replace("#","");
 if(h.startsWith("report/")){ loadMaster(); openReport(decodeURIComponent(h.split("/")[1])); }
 else route(["master","reports","about"].includes(h)?h:"master");
 </script>
+
+<!-- 방문 집계 (화면에 표시되지 않음). 통계는 stats.html 에서만 확인 -->
+<script>
+(function(){
+  try{
+    var NS="lawtattoo-8edecbfb50c05fa9";
+    var base="https://abacus.jasoncameron.dev/hit/"+NS+"/";
+    var p=function(n){return n<10?"0"+n:n};
+    var d=new Date();
+    var day="d"+d.getFullYear()+p(d.getMonth()+1)+p(d.getDate());
+    // 하루 1회만 집계(같은 방문자 새로고침 중복 방지)
+    var k="lt_counted_"+day;
+    if(!localStorage.getItem(k)){
+      fetch(base+"total",{keepalive:true}).catch(function(){});
+      fetch(base+day,{keepalive:true}).catch(function(){});
+      try{localStorage.setItem(k,"1")}catch(e){}
+    }
+  }catch(e){}
+})();
+</script>
 </body>
 </html>
