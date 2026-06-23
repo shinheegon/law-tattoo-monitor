@@ -132,7 +132,8 @@
       <span class="badge"><span class="dot g"></span> 문신사법 <b>통과</b> · 시행 2027-10-29</span>
       <span class="badge"><span class="dot g"></span> 대법 판례 <b>변경 확정</b> (2026-05)</span>
       <span class="badge"><span class="dot y"></span> 하위법령 <b>제정 추진중</b></span>
-      <span class="badge"><span class="dot b"></span> 갱신 <b id="updated">—</b></span>
+      <span class="badge"><span class="dot b"></span> 내용 갱신 <b id="updated">—</b></span>
+      <span class="badge"><span class="dot g"></span> 마지막 점검 <b id="lastcheck">—</b></span>
     </div>
   </div>
 </header>
@@ -184,6 +185,13 @@ async function loadMaster(){
     // '최종 갱신' 추출
     const m = md.match(/최종 갱신:\*\*\s*([0-9-]+)/) || md.match(/기준일:\*\*\s*([0-9-]+)/);
     if(m) document.getElementById("updated").textContent = m[1];
+    // Changelog 마지막 행에서 '마지막 점검일 · 결과' 추출
+    const cl = [...md.matchAll(/\n\|\s*(20\d{2}-\d{2}-\d{2})[^|\n]*\|([^|\n]*)\|/g)];
+    if(cl.length){
+      const last = cl[cl.length-1];
+      const res = /없음/.test(last[2]) ? "변경 없음" : "변경 있음";
+      document.getElementById("lastcheck").textContent = last[1] + " · " + res;
+    }
     content.innerHTML = '<div class="md">'+rewriteRelLinks(marked.parse(md))+'</div>';
   }catch(e){ content.innerHTML = '<div class="err">⚠️ '+e.message+'</div>'; }
 }
