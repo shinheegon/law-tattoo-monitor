@@ -115,6 +115,22 @@
   .backBtn{appearance:none;border:1px solid var(--line);background:var(--panel2);color:var(--txt);
     font-family:inherit;font-weight:700;font-size:13px;padding:8px 14px;border-radius:10px;cursor:pointer;margin:6px 0 4px}
   .backBtn:hover{border-color:var(--accent)}
+  .roadmapIntro{padding:18px 20px;margin:16px 0 22px;border:1px solid rgba(255,180,84,.35);border-radius:14px;background:rgba(255,180,84,.08)}
+  .roadmapIntro strong{color:#ffd08a}
+  .legend{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 22px}
+  .legend span{display:inline-flex;align-items:center;gap:7px;padding:5px 10px;border:1px solid var(--line);border-radius:999px;color:var(--muted);font-size:12px}
+  .timeline{position:relative;display:grid;gap:12px;margin:8px 0 26px;padding-left:26px}
+  .timeline::before{content:"";position:absolute;left:8px;top:12px;bottom:12px;width:2px;background:var(--line)}
+  .step{position:relative;padding:16px 18px;border:1px solid var(--line);border-radius:14px;background:var(--panel2)}
+  .step::before{content:"";position:absolute;left:-24px;top:22px;width:10px;height:10px;border:3px solid var(--bg);border-radius:50%;background:var(--muted)}
+  .step.done::before{background:var(--good)} .step.now::before{background:var(--warn)} .step.future::before{background:var(--accent)}
+  .stepHead{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:5px}
+  .stepTitle{font-weight:800;color:#fff}.stepDate{flex:0 0 auto;color:var(--accent);font-size:13px;font-weight:700}
+  .step p{margin:0;color:var(--muted);font-size:14px}
+  .statusPill{display:inline-block;margin-top:9px;padding:3px 8px;border-radius:999px;background:rgba(255,180,84,.12);color:#ffd08a;font-size:12px;font-weight:700}
+  .sourceBox{margin-top:24px;padding-top:14px;border-top:1px solid var(--line);color:var(--muted);font-size:13px}
+  .sourceBox a{color:var(--accent);text-decoration:none}
+  @media(max-width:620px){.stepHead{display:block}.stepDate{display:block;margin-top:3px}.timeline{padding-left:22px}.step::before{left:-20px}}
 </style>
 </head>
 <body>
@@ -141,6 +157,7 @@
 <nav class="tabs">
   <div class="tabsInner">
     <button class="tab active" data-view="master">📋 마스터 문서</button>
+    <button class="tab" data-view="roadmap">🧭 제도화 로드맵</button>
     <button class="tab" data-view="reports">🗂️ 변경 리포트</button>
     <button class="tab" data-view="about">ℹ️ 시스템 정보</button>
   </div>
@@ -239,12 +256,39 @@ function loadAbout(){
   </div>`;
 }
 
+function loadRoadmap(){
+  content.innerHTML = `<div class="md">
+    <h1>🧭 문신사법 제정부터 제도화까지</h1>
+    <p>법률이 통과됐다고 바로 면허·등록 제도가 시작되는 것은 아닙니다. 현재 위치와 다음 절차를 순서대로 정리했습니다.</p>
+    <div class="roadmapIntro">
+      <strong>국민설명회 일정</strong><br>
+      정부 계획상 <strong>2026년 8~9월 개최 예정</strong>입니다. 다만 <strong>정확한 날짜·시간·장소·참가 신청 방법은 아직 공식 공고가 확인되지 않았습니다.</strong> 보건복지부 공고가 나오면 이 영역을 확정 일정으로 즉시 갱신합니다.
+    </div>
+    <div class="legend"><span><i class="dot g"></i> 완료</span><span><i class="dot y"></i> 진행·공고 대기</span><span><i class="dot b"></i> 예정</span></div>
+    <div class="timeline">
+      <section class="step done"><div class="stepHead"><span class="stepTitle">1. 법안 발의·병합 심사</span><span class="stepDate">국회 심사 단계</span></div><p>복수의 문신·타투 관련 법안을 보건복지위원회에서 통합·조정해 제정안을 마련했습니다.</p></section>
+      <section class="step done"><div class="stepHead"><span class="stepTitle">2. 국회 본회의 통과</span><span class="stepDate">2025-09-25</span></div><p>문신사 국가면허, 업소 등록, 위생·안전 의무의 법률상 근거가 확정됐습니다.</p></section>
+      <section class="step done"><div class="stepHead"><span class="stepTitle">3. 법률 공포</span><span class="stepDate">2025-10-28</span></div><p>법률 제21070호로 공포됐으며, 부칙에 따라 공포 후 2년이 지난 날부터 시행됩니다.</p></section>
+      <section class="step now"><div class="stepHead"><span class="stepTitle">4. 시행 준비·현장 의견수렴</span><span class="stepDate">2026~2027</span></div><p>시설·위생 기준, 국가시험, 면허, 업소등록, 교육, 의약품·염료 기준을 구체화하는 단계입니다. 2026년 7월에는 문신시술 표준지침이 공개됐습니다.</p></section>
+      <section class="step now"><div class="stepHead"><span class="stepTitle">5. 대국민 설명회</span><span class="stepDate">2026년 8~9월 계획</span></div><p>시설기준·면허·국가시험 등 제도 전반을 설명하고 의견을 수렴하는 일정입니다.</p><span class="statusPill">확정 일시·장소 공식 공고 대기</span></section>
+      <section class="step future"><div class="stepHead"><span class="stepTitle">6. 시행령·시행규칙 입법예고</span><span class="stepDate">공식안 발표 대기</span></div><p>정부 초안 공개 후 국민 의견 제출, 관계기관 협의, 법제처 심사 등의 절차를 거칩니다. 이 단계에서 시험과목·시설·위생·등록의 세부 기준이 드러납니다.</p></section>
+      <section class="step future"><div class="stepHead"><span class="stepTitle">7. 하위법령 확정·공포</span><span class="stepDate">본법 시행 전</span></div><p>국무회의 및 부령 확정 절차를 거쳐 실제 현장에 적용할 세부 규칙이 완성됩니다.</p></section>
+      <section class="step future"><div class="stepHead"><span class="stepTitle">8. 문신사법 본 시행</span><span class="stepDate">2027-10-29</span></div><p>국가면허·업소등록·교육·건강진단·위생관리 등 법정 제도가 시행됩니다.</p></section>
+      <section class="step future"><div class="stepHead"><span class="stepTitle">9. 제1회 국가시험</span><span class="stepDate">2027년 말 예정</span></div><p>구체적인 시험일, 과목, 방식은 국시원·보건복지부의 공식 시행계획 공고로 확정됩니다.</p></section>
+      <section class="step future"><div class="stepHead"><span class="stepTitle">10. 기존 종사자 전환 특례</span><span class="stepDate">~ 2029-10-28</span></div><p>요건을 갖춘 기존 종사자는 시행 후 최대 2년 동안 임시 업소등록을 활용할 수 있으며, 기간 안에 면허 취득 후 정식 등록해야 합니다.</p></section>
+    </div>
+    <blockquote><strong>사업자가 지금 볼 것:</strong> 설명회 공고 → 시행령·시행규칙 입법예고 → 국가시험 시행계획 → 임시등록 신청요건 순으로 확인하세요.</blockquote>
+    <div class="sourceBox">근거: <a href="https://law.go.kr/LSW/lsInfoP.do?lsiSeq=279291&viewCls=lsRvsDocInfoR" target="_blank" rel="noopener">국가법령정보센터 문신사법</a> · <a href="https://www.korea.kr/news/policyNewsView.do?newsId=148958160" target="_blank" rel="noopener">보건복지부 정책브리핑</a> · <a href="https://www.seoul.co.kr/news/economy/2026/06/11/20260611500154" target="_blank" rel="noopener">설명회·제도 준비 일정 보도</a><br>최종 확인: 2026-08-28 · 확정 공고 전 일정은 변경될 수 있습니다.</div>
+  </div>`;
+}
+
 function setActive(view){
   document.querySelectorAll(".tab").forEach(t=>t.classList.toggle("active",t.dataset.view===view));
 }
 function route(view){
   setActive(view);
   if(view==="master") loadMaster();
+  else if(view==="roadmap") loadRoadmap();
   else if(view==="reports") loadReports();
   else loadAbout();
 }
@@ -255,7 +299,7 @@ document.querySelectorAll(".tab").forEach(t=>t.addEventListener("click",()=>{
 // 초기 라우팅 (해시 지원)
 const h = location.hash.replace("#","");
 if(h.startsWith("report/")){ loadMaster(); openReport(decodeURIComponent(h.split("/")[1])); }
-else route(["master","reports","about"].includes(h)?h:"master");
+else route(["master","roadmap","reports","about"].includes(h)?h:"master");
 </script>
 
 <!-- 약한 복사 방지(우회 가능) : 우클릭·복사·저장/인쇄/소스 단축키 차단 -->
